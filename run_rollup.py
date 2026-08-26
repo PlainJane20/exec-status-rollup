@@ -28,6 +28,17 @@ from health_scorer import score_workstream
 from narrator import narrate
 from trend import diff_and_update
 
+# Optional integration with agent-control-tower — gates the Slack post
+# behind human approval. Falls back to posting directly (with a warning) if
+# that sibling repo isn't checked out, same graceful-degradation pattern
+# used in slack-daily-agent.
+sys.path.insert(0, str(Path(__file__).parent.parent / "agent-control-tower"))
+try:
+    from approval import ApprovalDenied, governed_action
+    _GOVERNANCE_AVAILABLE = True
+except ImportError:
+    _GOVERNANCE_AVAILABLE = False
+
 console = Console()
 
 
@@ -111,9 +122,21 @@ def main():
                 match = next((c for c in resp["channels"] if c["name"] == args.slack_channel), None)
                 if not match:
                     console.print(f"[yellow]#{args.slack_channel} not found or you're not a member.[/]")
+                elif _GOVERNANCE_AVAILABLE:
+                    red_count = sum(1 for w in scored if w["status"] == "RED")
+                    try:
+                        governed_action(
+                            "exec-status-rollup", "slack_post_adhoc",
+                            f"post this executive rollup ({red_count} RED workstream(s)) to #{args.slack_channel}",
+                            lambda: client.chat_postMessage(channel=match["id"], text=slack_text),
+                            interactive=True,
+                        )
+                        console.print(f"[green]✓[/] Posted to #{args.slack_channel}")
+                    except ApprovalDenied:
+                        console.print("[yellow]Post to Slack was not approved — skipped.[/]")
                 else:
                     client.chat_postMessage(channel=match["id"], text=slack_text)
-                    console.print(f"[green]✓[/] Posted to #{args.slack_channel}")
+                    console.print(f"[green]✓[/] Posted to #{args.slack_channel} [dim](agent-control-tower not found — posted without approval gate)[/]")
             except SlackApiError as e:
                 console.print(f"[red]Slack post failed:[/] {e.response['error']}")
 
