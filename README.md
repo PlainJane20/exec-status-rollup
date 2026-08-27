@@ -1,3 +1,5 @@
+<img src="docs/exec-status-rollup-banner.svg" alt="Executive Status Rollup — Executive Portfolio Intelligence" width="100%" />
+
 # Executive Status Rollup
 
 <div align="center">
