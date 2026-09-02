@@ -57,6 +57,33 @@ flowchart LR
 | Workstream matching by exact Jira key, not fuzzy text | A related project needed `difflib` fuzzy matching because Slack questions have no stable ID. Jira issues do — using an exact key match instead of fuzzy matching where the data supports it is simpler and has zero false-match risk. |
 | Credentials resolved via a sibling-repo `.env` fallback chain | Reuses the same live Jira token already configured for `pm-automation-system` and the same Anthropic key already configured for `slack-daily-agent`, instead of asking for (and duplicating) the same secrets a third time. |
 
+## How this compares to Rovo (and why that's not a small distinction)
+
+Atlassian's own **Rovo Strategic Intelligence** (open beta, June 2026) also
+generates AI-written project-health narration — but it does so by having the
+model *reason over* the Teamwork Graph to infer status. That's the exact
+design choice this tool deliberately avoids: here, the RAG color is decided
+by `health_scorer.py` — plain, testable, deterministic rules over due dates
+and staleness — *before* Claude ever sees the ticket. Claude's only job is to
+write up a status that a human (or `pytest`) already computed and can verify
+independently of the model.
+
+Concretely, that means:
+
+- **A wrong status is a bug you can catch and fix in a unit test.** Rovo's
+  AI-inferred status has no equivalent — if the model's inference is wrong,
+  there's no deterministic ground truth to diff it against. Here, one exists:
+  `test_health_scorer.py`'s 9 tests pin down exactly what "red" means, and a
+  regression in that logic fails a test before it ever reaches a VP's inbox.
+- **The narration can be swapped or removed without changing a single status.**
+  Claude writes the prose; it never touches the RAG color. Turn off the LLM
+  entirely and the rollup still produces correct, auditable Red/Amber/Green
+  calls — just without the write-up.
+- **This is a narrower promise than Rovo's, on purpose.** Rovo is a full
+  reasoning layer across Atlassian's whole graph; this tool does one thing —
+  status classification you can unit-test — and treats the LLM as a renderer
+  for facts it doesn't get a vote in deciding.
+
 ## Real bugs found building this
 
 Same discipline as the other repos in this series — documented as found,
