@@ -17,12 +17,21 @@ Claude, and tracked week-over-week so a status flip is visible instead of
 silently overwritten.
 
 **Why this exists:** the other two tools in this series
-([slack-daily-agent](https://github.com/PlainJane20/slack-daily-brief),
+([slack-daily-brief](https://github.com/PlainJane20/slack-daily-brief),
 [pm-automation-system](https://github.com/PlainJane20/pm-automation-system))
 each solve one piece of a TPM's week — reading Slack, automating Jira
 intake. This one is the integration: it's the artifact a TPM actually hands
 to leadership, built by connecting the other two rather than starting a
 fourth disconnected tool.
+
+> **Related work in this portfolio:** [critical-path-radar](https://github.com/PlainJane20/critical-path-radar)
+> reads the same Jira project and complements this one directly — RAG
+> status here says a workstream *looks* unhealthy; critical-path-radar's
+> CPM math says whether that workstream's health *matters* to the
+> delivery date. [agent-control-tower](https://github.com/PlainJane20/agent-control-tower)
+> is retrofitted onto this agent (and slack-daily-brief) as the
+> governance layer — cost caps, audit log, human-approval gate on the
+> Slack post.
 
 ## At a glance
 
@@ -69,16 +78,21 @@ flowchart LR
 | Workstream matching by exact Jira key, not fuzzy text | A related project needed `difflib` fuzzy matching because Slack questions have no stable ID. Jira issues do — using an exact key match instead of fuzzy matching where the data supports it is simpler and has zero false-match risk. |
 | Credentials resolved via a sibling-repo `.env` fallback chain | Reuses the same live Jira token already configured for `pm-automation-system` and the same Anthropic key already configured for `slack-daily-agent`, instead of asking for (and duplicating) the same secrets a third time. |
 
-## How this compares to Rovo (and why that's not a small distinction)
+## The competency this is really practicing: keeping the model out of the decision
 
-Atlassian's own **Rovo Strategic Intelligence** (open beta, June 2026) also
-generates AI-written project-health narration — but it does so by having the
-model *reason over* the Teamwork Graph to infer status. That's the exact
-design choice this tool deliberately avoids: here, the RAG color is decided
-by `health_scorer.py` — plain, testable, deterministic rules over due dates
-and staleness — *before* Claude ever sees the ticket. Claude's only job is to
-write up a status that a human (or `pytest`) already computed and can verify
-independently of the model.
+The core design skill this repo is built to demonstrate is separating
+*deciding* from *narrating* in an LLM pipeline — deciding what to say only
+after a deterministic rule has already decided what's true. `health_scorer.py`
+computes the RAG color from plain, testable rules over due dates and
+staleness *before* Claude ever sees the ticket; Claude's only job is to
+write up a status that a human (or `pytest`) already computed and can
+verify independently of the model.
+
+For context on why that distinction matters beyond this repo: Atlassian's
+own **Rovo Strategic Intelligence** (open beta, June 2026) generates
+AI-written project-health narration too, but by having the model *reason
+over* the Teamwork Graph to infer status directly — the exact pattern this
+design avoids.
 
 Concretely, that means:
 
