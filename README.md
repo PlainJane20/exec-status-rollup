@@ -78,15 +78,16 @@ flowchart LR
 | Workstream matching by exact Jira key, not fuzzy text | A related project needed `difflib` fuzzy matching because Slack questions have no stable ID. Jira issues do — using an exact key match instead of fuzzy matching where the data supports it is simpler and has zero false-match risk. |
 | Credentials resolved via a sibling-repo `.env` fallback chain | Reuses the same live Jira token already configured for `pm-automation-system` and the same Anthropic key already configured for `slack-daily-agent`, instead of asking for (and duplicating) the same secrets a third time. |
 
-## The competency this is really practicing: keeping the model out of the decision
+## Deciding vs. narrating: keeping the model out of the decision
 
-The core design skill this repo is built to demonstrate is separating
-*deciding* from *narrating* in an LLM pipeline — deciding what to say only
-after a deterministic rule has already decided what's true. `health_scorer.py`
-computes the RAG color from plain, testable rules over due dates and
-staleness *before* Claude ever sees the ticket; Claude's only job is to
-write up a status that a human (or `pytest`) already computed and can
-verify independently of the model.
+> **The competency this is really practicing:** separating *deciding* from
+> *narrating* in an LLM pipeline — deciding what to say only after a
+> deterministic rule has already decided what's true.
+
+`health_scorer.py` computes the RAG color from plain, testable rules over
+due dates and staleness *before* Claude ever sees the ticket; Claude's
+only job is to write up a status that a human (or `pytest`) already
+computed and can verify independently of the model.
 
 For context on why that distinction matters beyond this repo: Atlassian's
 own **Rovo Strategic Intelligence** (open beta, June 2026) generates
