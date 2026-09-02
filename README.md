@@ -1,3 +1,5 @@
+<img src="docs/exec-status-rollup-banner.svg" alt="Executive Status Rollup — Executive Portfolio Intelligence" width="100%" />
+
 # Executive Status Rollup
 
 <div align="center">
@@ -30,6 +32,16 @@ fourth disconnected tool.
 | **Approach** | Deterministic RAG scoring (auditable, testable) + Claude narration (grounded, not deciding status) + week-over-week trend diffing |
 | **Data** | Real, live Jira data from the PGMAUTO project — not a mocked demo |
 | **Stack** | Python · Jira REST API v3 · Claude (Anthropic API) · pytest · Slack API |
+
+## Competencies demonstrated
+
+| Competency | Observable evidence |
+|---|---|
+| Portfolio governance | Aggregates workstreams into a comparable executive health view |
+| Decision-quality design | Deterministic status rules remain separate from narrative generation |
+| Trend management | Week-over-week history makes deterioration and recovery visible |
+| Systems integration | Connects Jira evidence, local history, Claude narration, and optional Slack delivery |
+| Operational credibility | Documents real API migrations, timestamp defects, and credential propagation fixes |
 
 ## Architecture
 

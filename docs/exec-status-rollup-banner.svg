@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" role="img" aria-labelledby="title description">
+  <title id="title">Executive Status Rollup</title>
+  <desc id="description">Turning portfolio evidence into grounded, decision-ready executive status.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#081a2a"/>
+      <stop offset="0.56" stop-color="#12354d"/>
+      <stop offset="1" stop-color="#2563eb" stop-opacity=".72"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#86efac" stop-opacity=".26"/>
+      <stop offset="1" stop-color="#86efac" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#030b13" flood-opacity=".38"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="320" rx="24" fill="url(#bg)"/>
+  <circle cx="1035" cy="55" r="230" fill="url(#glow)"/>
+  <g opacity=".16" fill="none" stroke="#86efac" stroke-width="1.2" color="#86efac"><path d="M770 214c78-78 126 18 196-64s117 6 180-77"/><path d="M770 247c73-49 132-10 201-46s113 0 175-42"/><g fill="currentColor" stroke="none"><circle cx="770" cy="214" r="5"/><circle cx="966" cy="150" r="5"/><circle cx="1146" cy="73" r="5"/></g></g>
+  <g transform="translate(74 68)" filter="url(#shadow)">
+    <rect width="88" height="88" rx="22" fill="#102f45" stroke="#86efac" stroke-opacity=".58"/>
+    <g fill="none" stroke="#86efac" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" color="#86efac"><path d="M18 66h14V42H18zm22 0h14V25H40zm22 0h14V13H62z"/><path d="M15 75h64"/><circle cx="25" cy="31" r="5" fill="currentColor" stroke="none"/><circle cx="47" cy="15" r="5" fill="currentColor" stroke="none"/><circle cx="69" cy="7" r="5" fill="currentColor" stroke="none"/></g>
+  </g>
+  <text x="190" y="112" fill="#ffffff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="44" font-weight="750" letter-spacing="-1">Executive Status Rollup</text>
+  <text x="192" y="153" fill="#86efac" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="2.5">EXECUTIVE PORTFOLIO INTELLIGENCE</text>
+  <text x="75" y="225" fill="#dcebf0" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21">Turning portfolio evidence into grounded, decision-ready</text>
+  <text x="75" y="258" fill="#dcebf0" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="21">executive status.</text>
+  <g transform="translate(816 168)" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12" font-weight="700"><g transform="translate(0 0)"><rect width="126" height="42" rx="21" fill="#ffffff" fill-opacity=".1" stroke="#ffffff" stroke-opacity=".2"/><text x="63" y="26" text-anchor="middle" fill="#edf7fa">deterministic RAG</text></g><g transform="translate(136 0)"><rect width="102" height="42" rx="21" fill="#ffffff" fill-opacity=".1" stroke="#ffffff" stroke-opacity=".2"/><text x="51" y="26" text-anchor="middle" fill="#edf7fa">trend history</text></g><g transform="translate(248 0)"><rect width="96" height="42" rx="21" fill="#ffffff" fill-opacity=".1" stroke="#ffffff" stroke-opacity=".2"/><text x="48" y="26" text-anchor="middle" fill="#edf7fa">AI narration</text></g></g>
+</svg>
