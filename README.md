@@ -24,6 +24,19 @@ intake. This one is the integration: it's the artifact a TPM actually hands
 to leadership, built by connecting the other two rather than starting a
 fourth disconnected tool.
 
+> **Why I built it:** this is a personal project, built to get real practice
+> keeping a status *decision* separate from its *narration* — the RAG color
+> here comes from testable rules over due dates, staleness, and blocked
+> children that Claude never touches, not from asking a model to eyeball a
+> ticket and guess. That separation is the actual skill: a Staff/Principal
+> TPM has to make status calls that hold up under questioning, and "the LLM
+> said so" isn't a defensible answer, while "here's the rule, and here's the
+> unit test that pins it down" is. The week-over-week trend history was
+> practice at the other half of the same problem — building a system that
+> remembers its last answer instead of treating every report as a fresh
+> snapshot, so a quiet regression shows up as a visible flip instead of
+> getting silently overwritten.
+
 > **Related work in this portfolio:** [critical-path-radar](https://github.com/PlainJane20/critical-path-radar)
 > reads the same Jira project and complements this one directly — RAG
 > status here says a workstream *looks* unhealthy; critical-path-radar's
