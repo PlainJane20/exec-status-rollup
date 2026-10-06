@@ -42,9 +42,10 @@ fourth disconnected tool.
 > status here says a workstream *looks* unhealthy; critical-path-radar's
 > CPM math says whether that workstream's health *matters* to the
 > delivery date. [agent-control-tower](https://github.com/PlainJane20/agent-control-tower)
-> is retrofitted onto this agent (and slack-daily-brief) as the
-> governance layer — cost caps, audit log, human-approval gate on the
-> Slack post.
+> can gate this agent's optional Slack post behind a human-approval prompt,
+> but only when its checkout sits next to this repo and is importable;
+> otherwise the post is ungoverned (see [Architecture pattern](#architecture-pattern)).
+> The narration model call is not routed through it.
 
 ## At a glance
 
@@ -61,7 +62,7 @@ fourth disconnected tool.
 **Deterministic pipeline with LLM at the edges.** `run_rollup.py` pulls Jira (`jira_client.py`), computes each RAG status with rules (`health_scorer.score_workstream`, unit-tested in `test_health_scorer.py`), records week-over-week flips (`trend.py`), and only then calls `narrator.narrate`, whose prompt tells Claude to write up the given statuses and facts without changing them. It is a fixed script, not an agent loop.
 
 - **Deterministic vs model-driven:** The status decision and the trend diff are code. The model only writes the prose from the scorer's output, so its wording cannot change a status.
-- **Human gate:** Only on the optional Slack post, and only if the sibling `agent-control-tower` checkout is importable (`governed_action`, interactive y/N). If it is missing, the post goes out directly. Saving the report to a file is never gated.
+- **Human gate:** Only on the optional Slack post, and only if the sibling `agent-control-tower` checkout is importable (`governed_action`, interactive y/N). If it is missing, the post goes out directly and ungoverned: no approval prompt, no audit record (the script only prints a note after posting). Saving the report to a file is never gated.
 - **Honest limit:** Nothing in code checks that the narration matches the computed statuses or facts; that rests on the prompt, so a reader should trust the rule output over the prose.
 
 ## Competencies demonstrated
