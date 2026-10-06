@@ -52,8 +52,17 @@ fourth disconnected tool.
 |---|---|
 | **Problem** | Executive status reporting is usually a manual Friday-afternoon reconstruction across tickets, channels, and memory |
 | **Approach** | Deterministic RAG scoring (auditable, testable) + Claude narration (grounded, not deciding status) + week-over-week trend diffing |
+| **Pattern** | Deterministic pipeline with LLM at the edges: rules decide status, Claude only narrates (see [Architecture pattern](#architecture-pattern)) |
 | **Data** | Real, live Jira data from the PGMAUTO project — not a mocked demo |
 | **Stack** | Python · Jira REST API v3 · Claude (Anthropic API) · pytest · Slack API |
+
+## Architecture pattern
+
+**Deterministic pipeline with LLM at the edges.** `run_rollup.py` pulls Jira (`jira_client.py`), computes each RAG status with rules (`health_scorer.score_workstream`, unit-tested in `test_health_scorer.py`), records week-over-week flips (`trend.py`), and only then calls `narrator.narrate`, whose prompt tells Claude to write up the given statuses and facts without changing them. It is a fixed script, not an agent loop.
+
+- **Deterministic vs model-driven:** The status decision and the trend diff are code. The model only writes the prose from the scorer's output, so its wording cannot change a status.
+- **Human gate:** Only on the optional Slack post, and only if the sibling `agent-control-tower` checkout is importable (`governed_action`, interactive y/N). If it is missing, the post goes out directly. Saving the report to a file is never gated.
+- **Honest limit:** Nothing in code checks that the narration matches the computed statuses or facts; that rests on the prompt, so a reader should trust the rule output over the prose.
 
 ## Competencies demonstrated
 
