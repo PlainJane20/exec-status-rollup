@@ -8,6 +8,8 @@
 [![Powered by Claude](https://img.shields.io/badge/Powered_by-Claude-D97757?style=for-the-badge&logo=anthropic&logoColor=white)](https://www.anthropic.com/)
 [![Jira API](https://img.shields.io/badge/Jira_API-0052CC?style=for-the-badge&logo=jira&logoColor=white)](https://developer.atlassian.com/)
 [![Tests](https://img.shields.io/badge/Unit_tests-9_passing-1baf7a?style=for-the-badge)](test_health_scorer.py)
+[![CI](https://img.shields.io/github/actions/workflow/status/PlainJane20/exec-status-rollup/ci.yml?branch=main&style=for-the-badge&label=CI)](https://github.com/PlainJane20/exec-status-rollup/actions/workflows/ci.yml)
+[![MIT License](https://img.shields.io/badge/License-MIT-6b7280?style=for-the-badge)](LICENSE)
 
 </div>
 
@@ -191,6 +193,10 @@ AMBER items, all driven by extended periods without updates...
 ---
 Closed this period: test via JIRA
 ```
+
+## License
+
+MIT — see [LICENSE](LICENSE).
 
 ## Contact
 
